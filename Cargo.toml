@@ -1,6 +1,5 @@
 [workspace]
-members = [
-    "day1",
-    "day2",
-    "common"
-] 
+
+resolver = "2"
+
+members = ["common", "day1_part1", "day2"]

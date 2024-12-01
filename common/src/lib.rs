@@ -1,18 +1,17 @@
-pub fn mean(numbers: &[f64]) -> Option<f64> {
-    if numbers.is_empty() {
-        return None;
-    }
-    let sum: f64 = numbers.iter().sum();
-    Some(sum / numbers.len() as f64)
+use std::{
+    fs::File,
+    io::{BufRead, BufReader},
+    path::Path,
+};
+
+// Return the trimmed lines from the file.
+pub fn read_lines(path: &str) -> Vec<String> {
+    let p = Path::new(path);
+    let file = File::open(&p).expect("unable to open file");
+    let reader = BufReader::new(file);
+
+    reader
+        .lines()
+        .map(|line| line.expect("unable to get line").trim().to_owned())
+        .collect()
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_mean() {
-        assert_eq!(mean(&[1.0, 2.0, 3.0]), Some(2.0));
-        assert_eq!(mean(&[]), None);
-    }
-} 
