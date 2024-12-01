@@ -37,7 +37,7 @@ fn run(input: &RawInput) -> u64 {
 
 fn main() {
     // Reuse the input from part 1.
-    let lines = read_lines("day1_part2/src/data/input1");
+    let lines = read_lines("day1_part1/src/data/input1");
     let parsed: RawInput = lines
         .into_iter()
         .map(|line| {
