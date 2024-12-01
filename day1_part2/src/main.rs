@@ -1,8 +1,8 @@
+use std::collections::HashMap;
+
 use common::read_lines;
 
 type RawInput = Vec<(u64, u64)>;
-
-// Basically a pairwise absolute difference (a L1 norm?).
 
 fn run(input: &RawInput) -> u64 {
     // Transpose the input
@@ -15,22 +15,29 @@ fn run(input: &RawInput) -> u64 {
         second.push(*i2);
     }
 
-    first.sort();
-    second.sort();
+    // Compute the occurences for each number in the second list.
+
+    let mut second_list_occurences: HashMap<u64, u64> = HashMap::with_capacity(input.len()); // worst case all the elements appear only once
+
+    for element in second {
+        second_list_occurences
+            .entry(element)
+            .and_modify(|counter| *counter += 1)
+            .or_insert(1);
+    }
 
     let mut sum = 0;
 
-    for (s1, s2) in first.into_iter().zip(second.into_iter()) {
-        let dist = s2.abs_diff(s1);
-
-        sum += dist
+    for s1 in first {
+        sum += s1 * second_list_occurences.get(&s1).map_or(0, |&c| c);
     }
 
     sum
 }
 
 fn main() {
-    let lines = read_lines("day1_part1/src/data/input1");
+    // Reuse the input from part 1.
+    let lines = read_lines("day1_part2/src/data/input1");
     let parsed: RawInput = lines
         .into_iter()
         .map(|line| {
@@ -56,13 +63,13 @@ fn main() {
 #[cfg(test)]
 mod test {
     #[test]
-    pub fn test_example_day1_part1() {
+    pub fn test_example_day1_part2() {
         use crate::run;
 
         let raw_input = vec![(3, 4), (4, 3), (2, 5), (1, 3), (3, 9), (3, 3)];
 
         let result = run(&raw_input);
 
-        assert_eq!(11, result);
+        assert_eq!(31, result);
     }
 }
